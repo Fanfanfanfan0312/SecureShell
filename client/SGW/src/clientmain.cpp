@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <string.h>
@@ -43,6 +44,12 @@ int main(int argc, char **argv){
 		printf("USAGE: -s server name -p port -l keyfile\n");
 		exit(1);
 	}
+    
+    struct sigaction sigIntHandler;
+    sigIntHandler.sa_handler = sigHandler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+    sigaction(SIGINT, &sigIntHandler, NULL);
 
 
 	linkage.config(inet_addr(servername), port, keyfile, sizeof(keyfile));
@@ -51,6 +58,13 @@ int main(int argc, char **argv){
 	while(1){
 		memset(buffer, 0, sizeof(buffer));
 		gets(buffer);
+        
+        if(strlen(buffer) == 0){
+            printf("$ ");
+            fflush(stdout);
+            continue;
+        }
+        
 		linkage.sendUnencryptedMessage(buffer, strlen(buffer));
 	}
 

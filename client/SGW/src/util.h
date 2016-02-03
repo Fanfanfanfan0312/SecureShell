@@ -21,6 +21,8 @@ using namespace std;
 
 #define TIMEOUT 2
 
+void sigHandler(int sig);
+
 struct Passphase{
 	unsigned char key[16];
 	unsigned char name[16];

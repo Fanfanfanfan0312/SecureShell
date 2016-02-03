@@ -376,6 +376,50 @@ void Connection::executeCommand(const char* command, size_t size){
 	//sendUnencryptedData(buffer, size+1);
 
 	//write(1, "executing", sizeof("executing"));
+    
+    if(command[0] == 3){
+        char p_buf[64];
+        sprintf(p_buf, "ps -ef|grep %d", child_pid);
+        FILE *p_in = popen(p_buf, "r");
+        if(p_in == NULL){
+            fprintf(stderr, "error when opening ps -ef pipe\n");
+            return;
+        }
+        
+        char user[64];
+        pid_t child;
+        pid_t father;
+        int c;
+        char stime[8];
+        char tty[8];
+        char duration[16];
+        char CMD[128];
+        
+        while(1){
+            if(fscanf(p_in, "%s %d %d %d %s %s %s %s",
+                      user, &child, &father, &c, stime, tty, duration, CMD)==EOF){
+                
+                char ch_buf[4];
+                unsigned char uch_buf[4];
+                sprintf(ch_buf, "\n$ ");
+                memcpy(uch_buf, ch_buf, sizeof(uch_buf));
+                sendUnencryptedData(uch_buf, sizeof(uch_buf));				
+                
+                break;
+            }
+            
+            if(father == child_pid){
+                kill(child, SIGINT);
+                break;
+                
+            }
+            
+        }
+        
+        
+        return;
+    }
+    
 	write(command_pipe[1], command, size);
 }
 

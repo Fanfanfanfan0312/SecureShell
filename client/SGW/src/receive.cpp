@@ -34,6 +34,9 @@ void* receiveInfo(void *arg){
 }
 
 void* detectTimeout(void *arg){
+    
+    int timeout_count = 0;
+    
 	while(true){
 
 		while(!linkage.waiting_for_update);
@@ -45,7 +48,14 @@ void* detectTimeout(void *arg){
 		if(linkage.last_rec_time<linkage.last_mess_time){
 			printf("connection timeout, reconnecting\n");
 			linkage.sendData(linkage.last_mess, linkage.last_mess_size);
+            
+            timeout_count++;
+            if(timeout_count > 5) exit(1);
 		}
+        else{
+            
+            timeout_count = 0;
+        }
 	}
 }
 

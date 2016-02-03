@@ -4,7 +4,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <time.h>
-#include <unistd.h>
+#include <signal.h>
 #include <openssl/rand.h>
 #include <openssl/sha.h>
 #include <openssl/aes.h>
@@ -22,6 +22,20 @@ using namespace std;
 
 extern void *receiveInfo(void *arg);
 extern void *detectTimeout(void *arg);
+
+extern Connection linkage;
+
+void sigHandler(int sig){
+    if(sig == 2) //ctrl+c
+    {
+        char buf[2];
+        buf[0] = 3;
+        buf[1] = '\0';
+        linkage.sendUnencryptedMessage(buf, 2);
+        
+    }
+    
+}
 
 void getRandom(unsigned char* rand_buf, int Bytes){
 	srand(time(NULL));
