@@ -3,9 +3,9 @@ A communication tunnel using UDP and OpenSSL, self-created protocol, has the sam
 
 When people use SSH in a web environment which Man-in-Middle attack might happen, the fact that they are using ssh can be compromised
 
-Even worse, sometimes your tcp connection of SSH can be broken by the middle man or the ISP using TCP RESET flag
+Even worse, sometimes your tcp connection of SSH can be broken by the middle man or ISP using TCP RESET flag
 
-Even when using obfuscated-openssh, there are certain characteristics of SSH after the protocol head, when authentiating the password.
+Even when using obfuscated-openssh, there are certain characteristics of SSH after the protocol head, when authentiating the password. And ISP or middle man can break the tcp connection when those are detected.
 
 So I wrote this Project, created a protocol based on UDP, which is immune to RESET flag and has almost no characteristic.
 
@@ -40,7 +40,7 @@ Then start the server side
 
 SGWD -p [port]
 
-If you want the server side program to run permanently
+If you want the server side program to run permanently in background
 
 nohup SGWD -p [port] 2>&1>SGWD_out.log
 
@@ -55,7 +55,7 @@ DETAILS:
 
 This is a communication tunnel using UDP.
 
-By default, the server activates a /bin/sh process, and the client side use the Pseudoterminal, the same as SSH
+By default, the server activates a /bin/sh process, and the client side controls the Pseudoterminal, the same as SSH
 
 But you can also rewrite sendUnencryptedData(), processDecryptedData() on the server side, and sendUnencryptedMessage(), processDecryptedData() on the client side to implement the communication protocal in the way you like.
 
