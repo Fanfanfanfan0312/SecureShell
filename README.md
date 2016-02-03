@@ -50,6 +50,9 @@ SGW -s [server ip address] -p [server port] -l [path to clientkey]
 
 And enjoy!
 
+PS: Though you can use "exit" to close the Pseudoterminal terminal, but it's highly recommended to use "stop_sgw".
+    Using "exit" might cause a bug on some machines and you will not be able to connect again.
+
 
 DETAILS:
 
