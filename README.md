@@ -1,4 +1,4 @@
-# SecureGateWay
+# SecureShell
 A communication tunnel using UDP and OpenSSL, self-created protocol, has the same function as SSH, available for further implementations of other usage.
 
 When people use SSH in a web environment which Man-in-Middle attack might happen, the fact that they are using ssh can be compromised
